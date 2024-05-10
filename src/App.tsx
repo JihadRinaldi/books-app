@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+// App.tsx
+import React, { useEffect, useState } from 'react';
+import BookList, { Book } from './components/BookList/BookList';
+import { BooksProvider } from './components/FavoritesContext';
+import Spinner from './components/Spinner/Spinner';
 
-function App() {
+const App: React.FC = () => {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch('https://my-json-server.typicode.com/cutamar/mock/books')
+      .then(response => response.json())
+      .then((data: Book[]) => {
+        const updatedData = data.map(book => ({
+          ...book,
+          isCreated: false
+        }))
+        setBooks(updatedData);
+      })
+      .catch(error => console.error('Error fetching books:', error))
+      .finally(() => setTimeout(() => {
+        setIsLoading(false);
+      }, 250))
+  }, []);
+
+  if (isLoading) {
+    return (<Spinner />)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>📚 Library</h1>
+      <BooksProvider>
+        <BookList books={books} />
+      </BooksProvider>
     </div>
   );
 }

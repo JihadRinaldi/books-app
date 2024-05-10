@@ -1,0 +1,25 @@
+// BookDetail.scss
+
+.book-detail {
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+
+  h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+  }
+
+  p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #666;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+    margin-top: 10px;
+  }
+}
